@@ -4,11 +4,13 @@ title: About
 permalink: /about/
 ---
 
-Web programming language များကိုလေ့လာနေသူတစ်ယောက်
+A pullstack developer :P
 
 ### More Information
 
-A place to include any other types of information that you'd like to include about yourself.
+"When action grows unprofitable, gather information; when information grows unprofitable, sleep..."
+
+Ursula K. Le Guin, The Left Hand of Darkness
 
 ### Contact me
 
