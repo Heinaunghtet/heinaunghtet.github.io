@@ -6,7 +6,7 @@
 name: Hein Aung Htet
 
 # Short bio or description (displayed in the header)
-description: Web Developer from Somewhere
+description: A web developer from somewhere
 
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
 avatar: https://avatars1.githubusercontent.com/u/53027122?s=460&u=9019715231ef6b38970a55eb10560976e93a9fbe&v=4
@@ -18,7 +18,7 @@ avatar: https://avatars1.githubusercontent.com/u/53027122?s=460&u=9019715231ef6b
 # Includes an icon in the footer for each username you enter
 footer-links:
   dribbble:
-  email:
+  email: heinaunghtet@outlook.com
   facebook: heinaunghtet53/
   flickr:
   github: Heinaunghtet/
@@ -26,8 +26,8 @@ footer-links:
   linkedin:
   pinterest:
   rss: # just type anything here for a working RSS icon
-  twitter: 
-  stackoverflow: # your stackoverflow profile, e.g. "users/50476/bart-kiers"
+  twitter: HeinAungHtet3/
+  stackoverflow: users/12897080/hein-aung-htet/
   youtube: # channel/<your_long_string> or user/<user-name>
   googleplus: # anything in your profile username that comes after plus.google.com/
 
