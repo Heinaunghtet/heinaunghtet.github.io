@@ -1,0 +1,18 @@
+CACHE MANIFEST
+# v1.0 : 10-08-2014
+ 
+CACHE:
+# pages
+index.html
+ 
+# styles & scripts
+
+ 
+# images
+
+ 
+NETWORK:
+index.html
+ 
+FALLBACK:
+index.html
