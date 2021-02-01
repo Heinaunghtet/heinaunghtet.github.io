@@ -1,5 +1,5 @@
 <!doctype html>
-<html  manifest="example.appcache">
+<html >
 
 <head>
     <meta charset="utf-8">
@@ -15,34 +15,28 @@
     <title>MK Online Shop</title>
     <meta name="description" content="None">
     <meta name="author" content="">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css"
-        crossorigin="anonymous">
+    <link rel="stylesheet" href="sources/stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"crossorigin="anonymous">
+    <link rel="stylesheet" href="sources/cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css"crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/styles.css">
     <meta name="theme-color" content="#2F3BA2">
     <link rel="manifest" href="manifest.json">
     <!--Bootstrap Scripts-->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
-    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/jsbarcode/3.3.20/JsBarcode.all.min.js" crossorigin="anonymous"></script>
+    <script src="sources/code.jquery.com/jquery-3.3.1.slim.min.js"crossorigin="anonymous"></script>
+    <script src="sources/cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"crossorigin="anonymous"></script>
+    <script src="sources/stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"crossorigin="anonymous"></script>
+    <script src="sources/cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="sources/cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
+    <script src="sources/cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js" crossorigin="anonymous"></script>
+    <script src="sources/cdn.jsdelivr.net/jsbarcode/3.3.20/JsBarcode.all.min.js" crossorigin="anonymous"></script>
     <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./assets/js/sw.js')
-                .then(function () {
-                    console.log('Service Worker Registered');
-                });
-        }
+        
+    
+
+        if('serviceWorker' in navigator) {
+            console.log('serviceWorker in navigator');
+            navigator.serviceWorker.register('sw.js');
+            console.log('done');
+        };
     </script>
     <script src="./assets/js/app.js"></script>
 </head>
@@ -53,24 +47,30 @@
         </div>
     </header>
     
-    <nav class="navbar navbar-expand-lg navbar-light bg-primary"><a href="#" class="navbar-brand">MK Online
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-success"><a href="#" class="navbar-brand text-light title_text"style="font-family:verdana;font-style: oblique;font-size:23px;">MK Online
             shop</a><button type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
             class="navbar-toggler"><span class="navbar-toggler-icon"></span></button>
         <div id="navbarSupportedContent" class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active" id="homebtn"><a href="#" class="nav-link">Home </a></li>
-                <li class="nav-item active"id="vouncherbtn"><a href="#" class="nav-link">Add Vouncher </a></li>
-                <li class="nav-item active" id="printbtn" style="display:none;"><a href="#" class="nav-link">Print </a></li>            
+                <li class="nav-item mx-2 py-2" id="homebtn"><a href="#" class="btn bg-primary text-light">Home</a></li>
+                <li class="nav-item mx-2 py-2" id="exportdatabtn"><a href="#" class="btn bg-primary text-light">Backup Data</a></li>
+                <li class="nav-item mx-2 py-2" id="importbtn"><a href="#" class="btn bg-primary text-light">Import Data</a></li>
+                <li class="nav-item mx-2 py-2"id="vouncherbtn"><a href="#" class="btn bg-primary text-light">Add Vouncher</a></li>
+                <li class="nav-item mx-2 py-2"id="filebox"style="display:none;"><input type="file" class="form-control-file" id="jsonfile"/></li>
+                <li class="nav-item mx-2 py-2"id="importdatabtn"style="display:none;"><a href="#" class="btn bg-primary text-light">Import</a></li>
+                <li class="nav-item py-2" id="printbtn" style="display:none;"><a href="#" class="btn bg-primary text-light">Print</a>
+                </li>            
             </ul>
-            <!-- <form class="form-inline my-2 my-lg-0"><input placeholder="Search" aria-label="Search" type="search"
-                    class="form-control mr-sm-2" /><button type="submit"
-                    class="btn btn-outline-success my-2 my-sm-0">Search</button></form> -->
+
         </div>
     </nav>
-
+    
+    
 <!-- insert form for vouncher  -->
-    <div class="container-fluid py-5" id="addform" style="display: none;" >
+    <div class="container-fluid py-2" id="addform" style="display: none;" >
+        
         <div class="bg-primary text-center py-3 mb-4">
             <div class="container">
                 <h5 class="font-weight-light text-white">Vouncher အချက်လက်များထည့်ရန်</h5>
@@ -107,8 +107,11 @@
                     <div id="iiz4v-2" class="form-group"><label for="exampleInput"
                             id="icnod-2">ပစ္စည်းအမျိုးအမည်</label><input type="text" placeholder="" id="product_name"
                             class="form-control" /><label for="exampleInput" id="i8zk7-2">အရေအတွက်</label><input
-                            type="number" placeholder="" class="form-control"id="quantity"/></div>
+                            type="number" placeholder="" class="form-control"id="quantity"/>
+                            <label for="exampleInput" id="i8zk7-2">အလေးချိန်</label><input
+                            type="number" placeholder="" class="form-control"id="weight"/></div>
                 </div>
+                
             </div>
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3">
                 <div class="container py-5 border border-primary rounded m-1">
@@ -121,7 +124,13 @@
                             class="form-control" id="total_cost" />
                             <label for="exampleInput"
                             id="i1fhk-2">စတင်ပို့ဆောင်သည့်ရက်စွဲ</label><input type="date" placeholder=""
-                            class="form-control" id="delivery_start_date" /></div>
+                            class="form-control" id="delivery_start_date" />
+                            
+                        </div>
+                        <div class="form-check"><input type="checkbox" value="1" id="defaultCheck1 needbill" class="form-check-input" /><label for="defaultCheck1" class="form-check-label">
+                            ငွေကောက်ခံရန်မလိုပါ
+                        </label></div>
+                            
                 </div>
                 <div class="row align-items-center">
                     <div class="col-auto">
@@ -133,8 +142,8 @@
     </div>
 
 <!--  edit form for vouncher-->
-    <div class="container-fluid" id="editform"style="display: none;">
-        <div class="bg-success text-center py-3 mb-4">
+    <div class="container-fluid py-2" id="editform"style="display: none;">
+        <div class="bg-info text-center py-3 mb-4">
             <div class="container">
                 <h5 class="font-weight-light text-white">Vouncher အချက်လက်များပြင်ဆင်ရန်</h5>
             </div>
@@ -172,7 +181,9 @@
                     <div id="iiz4v-2" class="form-group"><label for="exampleInput"
                             id="icnod-2">ပစ္စည်းအမျိုးအမည်</label><input type="text" placeholder="" id="editproduct_name"
                             class="form-control" /><label for="exampleInput" id="i8zk7-2">အရေအတွက်</label><input
-                            type="number" placeholder="" class="form-control"id="editquantity"/></div>
+                            type="number" placeholder="" class="form-control"id="editquantity"/>
+                            <label for="exampleInput" id="i8zk7-2">အလေးချိန်</label><input
+                            type="number" placeholder="kilogram" class="form-control"id="editweight"/></div>
                 </div>
             </div>
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 py-3">
@@ -199,7 +210,7 @@
 
 
 <!-- table for vouncher data -->
-    <div class="container-fluid mt-3" id="vouncherview">
+    <div class="container-fluid mt-3" id="vouncherview" style="display: ;">
         <div class="bg-info text-center py-3 mb-4">
             <div class="container">
                 <h5 class="font-weight-light text-white">Vouncher များ</h5>
@@ -218,6 +229,7 @@
                     <th>ဖုန်းနံပါတ်</th>
                     <th>ပစ္စည်းအမျိုးအမည်</th>
                     <th>အရေအတွက်</th>
+                    <th>အလေးချိန်</th>
                     <th>ပစ္စည်းတန်ဖိုး</th>
                     <th>ပို့ဆောင်ခ</th>
                     <th>ကျသငိ့ငွေ</th>
@@ -225,6 +237,7 @@
                     <th>ပြင်ဆင်ရန်</th>
                     <th>ဖျက်ရန်</th>
                     <th>vouncher</th>
+                    
                 </tr>
             </thead>
             <tbody >
@@ -238,7 +251,7 @@
     </div>
 
 <!-- footer for our team -->
-    <footer class="py-3 " id="footerview" >
+    <footer class="py-3 bg-light" id="footerview" style="display: none;">
         <div class="container ">
             <div class="d-flex flex-column flex-sm-row align-items-center justify-content-sm-between">
                 <p class="mb-0 small text-muted text-success">© 2021MMsoftware100. All right reserved.</p><a href="#">Terms and
@@ -249,7 +262,7 @@
 
 
 <!-- for printing services -->
-    <div class="container" id="printscreen"style="display: none;">
+    <div class="container" id="printscreen" style="display: none;">
 
         <div class="mailboxone">
 
@@ -257,16 +270,12 @@
             <!-- 
                 <input id="text" type="text" value="https://hogangnono.com" /><br />
                 <div id="qrcode"></div> -->
+            
             <div style="width:100%;height: 5%;">
-                <div style=float:left;>EXPRESS service</div>
-                <div style="float:right;">112/123</div>
-            </div>
-            <div style="width:100%;height: 10%;">
-                <div style="width:60%;float:left;">https://mkonlineshop.com တွင်အထက်ပါ code ဖြင့် tracking
-                    လိုက်နိုင်ပါသည်</div>
+                <div style="width:60%;float:left;"></div>
                 <div style="float:right;">ပုဇွန်တောင်စာတိုက်</div>
             </div>
-            <div style="width:100%;height: 15%;">
+            <div style="width:100%;height: 22%;">
                 <p>မှ</p>
                 <p>
                     MK Online shop(ph-0944444444444)
@@ -275,7 +284,7 @@
 
                 </p>
             </div>
-            <div style="width:100%;height: 18%;">
+            <div style="width:100%;height: 21%;">
                 <p>သို့</p>
                 <p>
                     ကိုဟိန်းအောင်ထက်
@@ -289,9 +298,9 @@
                 <div id="qrcode" style="width:40%;height:100%;float:left;"></div>
                 <input id="text" type="hidden" value="https://hogangnono.com" />
                 <div id="detail" style="width:60%;height:100%;float:left;">
-                    <svg id="itf-14"></svg>
+                    <!-- <svg id="itf-14"></svg>
 
-                    <p>COD:1231231-12313123-1321</p>
+                    <p></p> -->
                 </div>
             </div>
             <div style="width:100%;height: 30%;">
@@ -384,11 +393,7 @@
                 <div id="qrcodetwo" style="width:20%;height:100%;float:left;"></div>
                 <input id="text" type="hidden" value="https://hogangnono.com" />
                 <div id="detail" style="width:40%;height:100%;float:left;">
-                    <h3> ENUYILKJHG</h3>
-                    <div style="width:100%;height:auto;border:2px dotted black">
-                        <center>https://mkonlineshop.com တွင်အထက်ပါ code ဖြင့် tracking လိုက်နိုင်ပါသည်</center>
-
-                    </div>
+                    
 
                 </div>
                 <div id="shopname" style="width:30%;height:100%;float:left;position: relative;padding-bottom: 30px;">

@@ -19,6 +19,18 @@ $(document).ready(function () {
 
 
     console.log("welcome from delivery.js");
+    ////////////////////////////////////////////////////////////////
+    function exportToJsonFile(jsonData) {
+        let dataStr = JSON.stringify(jsonData);
+        let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+    
+        let exportFileDefaultName = 'data.json';
+    
+        let linkElement = document.createElement('a');
+        linkElement.setAttribute('href', dataUri);
+        linkElement.setAttribute('download', exportFileDefaultName);
+        linkElement.click();
+    }
 
     /////////////////////[calculation]////////////////////////////////
     const isInt = (n) => {
@@ -26,7 +38,7 @@ $(document).ready(function () {
     }
 
     const calculate = (num1, num2) => {
-        let result = num1 * num2;
+        let result = num1 + num2;
         if (isInt(result)) {
             return result;
         } else {
@@ -36,6 +48,24 @@ $(document).ready(function () {
 
     }
     ////////////////////////////////////////////////////////////////////   
+    function addData(input) {
+        let file = input.files[0];
+        let reader = new FileReader();
+
+          reader.readAsText(file);
+
+          reader.onload = function() {
+            console.log(reader.result);
+            let data= JSON.parse(reader.result);
+
+            localStorage.setItem('deliveryList', JSON.stringify(data));
+          };
+
+          reader.onerror = function() {
+            console.log(reader.error);
+          };
+
+    }
 
 
     function insert(delivery) {
@@ -142,6 +172,7 @@ $(document).ready(function () {
                 '<td >' + data[i]['phone_no'] + '</td>' +
                 '<td >' + data[i]['product_name'] + '</td>' +
                 '<td >' + data[i]['quantity'] + '</td>' +
+                '<td >' + data[i]['weight'] + '</td>' +
                 '<td >' + data[i]['price'] + '</td>' +
                 '<td >' + data[i]['delivery_fee'] + '</td>' +
                 '<td >' + data[i]['total_cost'] + '</td>' +
@@ -187,7 +218,7 @@ $(document).ready(function () {
         qrcode.makeCode(id);
         qrcodetwo.makeCode(id);
 
-        JsBarcode("#itf-14", id, { format: "itf14" });
+        //JsBarcode("#itf-14", id, { format: "itf14" });
     }
 
     
@@ -223,6 +254,7 @@ $(document).ready(function () {
         let phone_no = ($("#phone_no")).val();
         let product_name = ($("#product_name")).val();
         let quantity = ($("#quantity")).val();
+        let weight = ($("#weight")).val();
         let price = ($("#price")).val();
         let delivery_fee = ($("#delivery_fee")).val();
         let total_cost = ($("#total_cost")).val();
@@ -239,6 +271,7 @@ $(document).ready(function () {
             "phone_no": phone_no,
             "product_name": product_name,
             "quantity": quantity,
+            "weight": weight,
             "price": price,
             "delivery_fee": delivery_fee,
             "total_cost": total_cost,
@@ -275,6 +308,7 @@ $(document).ready(function () {
         ($("#editphone_no")).val(delivery.phone_no);
         ($("#editproduct_name")).val(delivery.product_name);
         ($("#editquantity")).val(delivery.quantity);
+        ($("#editweight")).val(delivery.weight);
         ($("#editprice")).val(delivery.price);
         ($("#editdelivery_fee")).val(delivery.delivery_fee);
         ($("#edittotal_cost")).val(delivery.total_cost);
@@ -302,7 +336,7 @@ $(document).ready(function () {
         /* Act on the event */
         alert("view");
         let deliveryid = $(this).attr('printid');
-        makeCode(deliveryid);
+        makeCode('mkonlineshop');
         $("#printbtn").css('display', '');
         let id = $(this).attr('printid');
         $("#editform").css('display', 'none');
@@ -327,6 +361,7 @@ $(document).ready(function () {
         let phone_no = ($("#editphone_no")).val();
         let product_name = ($("#editproduct_name")).val();
         let quantity = ($("#editquantity")).val();
+        let weight = ($("#editweight")).val();
         let price = ($("#editprice")).val();
         let delivery_fee = ($("#editdelivery_fee")).val();
         let total_cost = ($("#edittotal_cost")).val();
@@ -345,6 +380,7 @@ $(document).ready(function () {
             "phone_no": phone_no,
             "product_name": product_name,
             "quantity": quantity,
+            "weight": weight,
             "price": price,
             "delivery_fee": delivery_fee,
             "total_cost": total_cost,
@@ -365,6 +401,12 @@ $(document).ready(function () {
         $("#vouncherview").css('display', '');
         $("#printscreen").css('display', 'none');
         $("#printbtn").css('display', 'none');
+        $("#importbtn").css('display', '');
+        $("#exportdatabtn").css('display', '');
+        $("#vouncherbtn").css('display', '');
+        $("#homebtn").css('display', '');
+        $("#importdatabtn").css('display', 'none');
+        $("#filebox").css('display', 'none');
       
 
     });
@@ -387,6 +429,79 @@ $(document).ready(function () {
         /* Act on the event */
         alert("print");
         window.print();
+
+    });
+    $(document).on('click', '#exportdatabtn', function (event) {
+        event.preventDefault();
+        /* Act on the event */
+        alert("exportdatabtn");
+        var data = localStorage.getItem('deliveryList');
+        //Convert JSON Array to string.
+        var json = data;
+ 
+        //Convert JSON string to BLOB.
+        json = [json];
+        var blob1 = new Blob(json, { type: "text/plain;charset=utf-8" });
+ 
+        //Check the Browser.
+        var isIE = false || !!document.documentMode;
+        if (isIE) {
+            window.navigator.msSaveBlob(blob1, "Customers.txt");
+        } else {
+            var url = window.URL || window.webkitURL;
+            link = url.createObjectURL(blob1);
+            var a = document.createElement("a");
+            a.download = "backup.json";
+            a.href = link;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+        
+
+    });
+    $(document).on('click', '#importdatabtn', function (event) {
+        event.preventDefault();
+        /* Act on the event */
+        alert("importdatabtn");
+        let file=document.getElementById('jsonfile');
+        addData(file);
+        window.location.reload();
+        
+    });
+    $(document).on('click', '#importbtn', function (event) {
+        event.preventDefault();
+        /* Act on the event */
+        alert("importbtn");
+        $("#editform").css('display', 'none');
+        $("#addform").css('display', 'none');
+        $("#vouncherview").css('display', '');
+        $("#printscreen").css('display', 'none');
+        $("#importbtn").css('display', 'none');
+        $("#exportdatabtn").css('display', 'none');
+        $("#vouncherbtn").css('display', 'none');
+        $("#homebtn").css('display', '');
+        $("#importdatabtn").css('display', '');
+        $("#filebox").css('display', '');
+        
+       
+       
+
+    });
+    $(document).on('input', '#price', function() {
+        let total = calculate($('#price').val(), $('#delivery_fee').val());
+        //let result = total.toFixed(2);
+        alert(total);
+        $('#total_cost').val(total);
+
+    });
+
+    $(document).on('input', '#delivery_fee', function() {
+
+        let total = calculate($('#price').val(), $('#delivery_fee').val());
+        //let result = total.toFixed(2);
+        alert(total);
+        $('#total_cost').val(total);
 
     });
 

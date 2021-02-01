@@ -1,3 +1,4 @@
+.title_text{font-family: "Oswald", Helvetica, Arial, sans-serif!important;}
 .icon-footer-social-link svg {
 	height: 18px;
 	width: 18px;
@@ -116,8 +117,8 @@
 	border-image-width: 1;
 	border-image-outset: 0;
 	border-image-repeat: stretch;
-	width: 40em;
-	height:55em;
+	width: 42em;
+	height:57em;
 	font-style: normal;
 	font-variant-caps: normal;
 	font-variant-ligatures: normal;
@@ -175,8 +176,8 @@ transform: rotate(270.3deg);
 	border-image-width: 1;
 	border-image-outset: 0;
 	border-image-repeat: stretch;
-	width: 55em;
-	height:35em;
+	width: 57em;
+	height:40em;
 	font-style: normal;
 	font-variant-caps: normal;
 	font-variant-ligatures: normal;
@@ -211,3 +212,4 @@ transform: rotate(270.3deg);
 	.navbar .dropdown-menu.fade-up{ top:180%;  }
 	.navbar .nav-item:hover .dropdown-menu{ transition: .3s; opacity:1; visibility:visible; top:100%; transform: rotateX(0deg); }
 }
+
