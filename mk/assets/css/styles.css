@@ -112,7 +112,7 @@
 	border-right-color: transparent;
 	border-bottom-color: transparent;
 	border-left-color: transparent;
-	border-image-source: repeating-linear-gradient(-45deg, red 0px, red 1em, transparent 0px, transparent 2em, rgb(85, 136, 170) 0px, rgb(85, 136, 170) 3em, transparent 0px, transparent 4em);
+	border-image-source: repeating-linear-gradient(-45deg, rgb(50, 192, 50) 0px,  rgb(50, 192, 50) 1em, transparent 0px, transparent 2em, rgb(85, 136, 170) 0px, rgb(85, 136, 170) 3em, transparent 0px, transparent 4em);
 	border-image-slice: 16;
 	border-image-width: 1;
 	border-image-outset: 0;
@@ -140,7 +140,7 @@ transform: rotate(270.3deg);
     -moz-transform-origin: center;
     -ms-transform-origin: center;
     -o-transform-origin: center;
-	transform-origin: 50% 37%;
+	transform-origin: 51% 37%;
 	margin-bottom: -20%;
 }
 .mailboxbgimg {
@@ -171,7 +171,7 @@ transform: rotate(270.3deg);
 	border-right-color: transparent;
 	border-bottom-color: transparent;
 	border-left-color: transparent;
-	border-image-source: repeating-linear-gradient(-45deg, red 0px, red 1em, transparent 0px, transparent 2em, rgb(85, 136, 170) 0px, rgb(85, 136, 170) 3em, transparent 0px, transparent 4em);
+	border-image-source: repeating-linear-gradient(-45deg,  rgb(50, 192, 50) 0px 0px,  rgb(50, 192, 50) 0px 1em, transparent 0px, transparent 2em, rgb(85, 136, 170) 0px, rgb(85, 136, 170) 3em, transparent 0px, transparent 4em);
 	border-image-slice: 16;
 	border-image-width: 1;
 	border-image-outset: 0;

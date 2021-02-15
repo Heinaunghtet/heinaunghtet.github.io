@@ -1,7 +1,6 @@
 var cacheName = 'cache-v1';
 
-var appShellFiles = [
-  'index.html'
+var appShellFiles = ['index.html','./assets/js/app.js','./assets/css/styles.css','./sources/cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css','./sources/cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js','./sources/cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js','./sources/cdn.jsdelivr.net/jsbarcode/3.3.20/JsBarcode.all.min.js','./sources/cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js','./sources/cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js','./sources/code.jquery.com/jquery-3.3.1.slim.min.js','./sources/stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css','./sources/stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js'
 ];
 
 self.addEventListener('install', (e) => {

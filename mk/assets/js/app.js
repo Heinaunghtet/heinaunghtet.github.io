@@ -1,20 +1,4 @@
-/*jshint esversion: 6 */
-// function addTask() {
-//     var taskName = document.querySelector("#task").value;
-//     var taskListUI = ` <li class="checklist-entry list-group-item flex-column align-items-start py-4 px-4">
-//                            <div class="checklist-item checklist-item-success checklist-item-checked">
-//                                <div class="checklist-info">
-//                                    <h5 data-type="header" class="checklist-title mb-0">${taskName}</h5>
-//                                </div>
-//                                <div>
-//                                    <div class="custom-control custom-checkbox custom-checkbox-success"><input id="${taskName}" type="checkbox"  class="custom-control-input" /><label for="${taskName}"
-//                                            class="custom-control-label"></label></div>
-//                                </div>
-//                            </div>
-//                        </li>`
-//     var todoList = document.querySelector('.todo-list');
-//     todoList.insertAdjacentHTML('beforeend', taskListUI);
-// }
+
 $(document).ready(function () {
 
 
@@ -22,10 +6,10 @@ $(document).ready(function () {
     ////////////////////////////////////////////////////////////////
     function exportToJsonFile(jsonData) {
         let dataStr = JSON.stringify(jsonData);
-        let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-    
+        let dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+
         let exportFileDefaultName = 'data.json';
-    
+
         let linkElement = document.createElement('a');
         linkElement.setAttribute('href', dataUri);
         linkElement.setAttribute('download', exportFileDefaultName);
@@ -38,7 +22,7 @@ $(document).ready(function () {
     }
 
     const calculate = (num1, num2) => {
-        let result = num1 + num2;
+        let result = parseInt(num1) + parseInt(num2);
         if (isInt(result)) {
             return result;
         } else {
@@ -52,18 +36,18 @@ $(document).ready(function () {
         let file = input.files[0];
         let reader = new FileReader();
 
-          reader.readAsText(file);
+        reader.readAsText(file);
 
-          reader.onload = function() {
+        reader.onload = function () {
             console.log(reader.result);
-            let data= JSON.parse(reader.result);
+            let data = JSON.parse(reader.result);
 
             localStorage.setItem('deliveryList', JSON.stringify(data));
-          };
+        };
 
-          reader.onerror = function() {
+        reader.onerror = function () {
             console.log(reader.error);
-          };
+        };
 
     }
 
@@ -96,11 +80,11 @@ $(document).ready(function () {
         return getDeliveryList();
     }
 
-    function detail(id){
+    function detail(id) {
         let deliveryList = getDeliveryList();
         let delivery = {};
         delivery = deliveryList[deliveryList.findIndex(e => e.id == id)];
-        let index=deliveryList.findIndex(e => e.id ==id);
+        let index = deliveryList.findIndex(e => e.id == id);
         return delivery;
         // console.log(id);
         // console.log(deliveryList);
@@ -154,12 +138,15 @@ $(document).ready(function () {
     //////////////////////////////////////////////////////////////////////////////////////
 
     let data = getDeliveryList();
-   
+
     function showdata(data) {
         let count = 1;
         for (let i = 0; i < data.length; i++) {
 
             console.log(data[i]);
+            let needcashshow = 'မလိုပါ';
+
+            if (data[i]['needcash'] == 1) { needcashshow = 'လိုပါသည်' } else { needcashshow = 'မလိုပါ'; }
 
             let row = '<tr>' +
                 '<td>' + count + '</td>' +
@@ -176,7 +163,9 @@ $(document).ready(function () {
                 '<td >' + data[i]['price'] + '</td>' +
                 '<td >' + data[i]['delivery_fee'] + '</td>' +
                 '<td >' + data[i]['total_cost'] + '</td>' +
+                '<td >' + needcashshow + '</td>' +
                 '<td >' + data[i]['delivery_start_date'] + '</td>' +
+
                 '<td >' + '<button type="" id="editbtn" editid="' + data[i]['id'] + '"class="btn btn-success mb-2 m-auto">EDIT</button>' + '</td>' +
                 '<td >' + '<button type="" id="delbtn" deleteid="' + data[i]['id'] + '"class="btn btn-danger mb-2 m-auto">DEL</button>' + '</td>' +
                 '<td >' + '<button type="" id="printviewbtn" printid="' + data[i]['id'] + '"class="btn btn-info mb-2 m-auto">VIEW</button>' + '</td>' +
@@ -211,7 +200,7 @@ $(document).ready(function () {
     });
 
     function makeCode(id) {
-        
+
 
 
 
@@ -221,23 +210,23 @@ $(document).ready(function () {
         //JsBarcode("#itf-14", id, { format: "itf14" });
     }
 
-    
 
 
-    $(document).on('input', '#itemamount', function () {
-        let total = calculate($('#pricekyat').val(), $('#itemamount').val());
+
+    $(document).on('input', '#price', function () {
+        let total = calculate($('#price').val(), $('#delivery_fee').val());
         //let result = total.toFixed(2);
 
-        $('#totalpricekyat').val(total);
+        $('#total_cost').val(total);
 
     });
 
-    $(document).on('input', '#pricekyat', function () {
+    $(document).on('input', '#delivery_fee', function () {
 
-        let total = calculate($('#pricekyat').val(), $('#itemamount').val());
+        let total = calculate($('#price').val(), $('#delivery_fee').val());
         //let result = total.toFixed(2);
 
-        $('#totalpricekyat').val(total);
+        $('#total_cost').val(total);
 
     });
 
@@ -259,6 +248,13 @@ $(document).ready(function () {
         let delivery_fee = ($("#delivery_fee")).val();
         let total_cost = ($("#total_cost")).val();
         let delivery_start_date = ($("#delivery_start_date")).val();
+        let needcash = 2;
+        if (($("#needcash"))[0].checked == true) {
+            needcash = 1;
+        } else {
+            needcash = needcash;
+        }
+
 
 
         let delivery = {
@@ -277,9 +273,10 @@ $(document).ready(function () {
             "total_cost": total_cost,
             "delivery_status": 'pending',
             "delivery_start_date": delivery_start_date,
+            "needcash": needcash,
             "delivery_end_date": null
         };
-        // console.log(delivery);
+        console.log(delivery);
         insert(delivery);
         location.reload();
 
@@ -293,18 +290,43 @@ $(document).ready(function () {
         let editid = $(this).attr('editid');
         console.log(editid);
 
-        let delivery=detail(editid);
+        let delivery = detail(editid);
         console.log(delivery.delivery_start_date);
-       
-    
+
+
 
         ($("#editid")).val(delivery.id);
         ($("#editname")).val(delivery.name);
         ($("#edithouse")).val(delivery.house);
         ($("#editroad")).val(delivery.road);
         ($("#editquater")).val(delivery.quater);
-        ($("#edittownship")).val(delivery.township);
-        ($("#editdivision")).val(delivery.division);
+        
+
+        let editdivision_data=delivery.division;
+        $("#editdivision option").each(function() {
+            if ($(this).text() == editdivision_data) {
+                $(this).prop('selected', true).change();
+            }
+            let town=findbydivision(division_data, editdivision_data);
+            $('#edittownship').empty();
+            town.map(i => {
+                $('#edittownship').append('<option value="' + i+ '"">' + i + '</option>');
+
+            })
+
+
+        });
+
+        let edittownship_data=delivery.township;
+        $("#edittownship option").each(function() {
+            if ($(this).text() == edittownship_data) {
+                $(this).prop('selected', true).change();
+            }
+
+
+        });
+        //($("#edittownship")).val(delivery.township);
+        //($("#editdivision")).val(delivery.division);
         ($("#editphone_no")).val(delivery.phone_no);
         ($("#editproduct_name")).val(delivery.product_name);
         ($("#editquantity")).val(delivery.quantity);
@@ -313,12 +335,17 @@ $(document).ready(function () {
         ($("#editdelivery_fee")).val(delivery.delivery_fee);
         ($("#edittotal_cost")).val(delivery.total_cost);
         ($("#editdelivery_start_date")).val(delivery.delivery_start_date);
+        if (delivery.needcash == 1) {
+            ($("#editneedcash"))[0].checked = true;
+        } else {
+            ($("#editneedcash"))[0].checked = false;
+        }
 
         $("#editform").css('display', '');
         $("#addform").css('display', 'none');
         $("#vouncherview").css('display', 'none');
         $("#printscreen").css('display', 'none');
-      
+
     });
 
     $(document).on('click', '#delbtn', function (event) {
@@ -336,6 +363,27 @@ $(document).ready(function () {
         /* Act on the event */
         alert("view");
         let deliveryid = $(this).attr('printid');
+        let delivery = detail(deliveryid);
+        console.log(delivery);
+        $("#customer_name").text(delivery.name + " ၊ ဖုန်း - " + delivery.phone_no);
+        $("#customer_address").text("အိမ်အမှတ်" + delivery.house + "၊" + delivery.road + "လမ်း၊" + delivery.quater + "ရပ်ကွက်၊" + delivery.township + " မြို့နယ်၊" + delivery.division);
+        $("#goods_type").text(delivery.product_name);
+        $("#goods_weight").text(delivery.weight + ' KG');
+        $("#package").text(delivery.product_name);
+        $("#total").text(delivery.total_cost + ' ကျပ်');
+        $("#total_fee").text(delivery.total_cost + ' ကျပ်');
+        $("#goods_name").text('Packages: ' + delivery.product_name);
+
+        $("#customer_nametwo").text(delivery.name + " ၊ ဖုန်း - " + delivery.phone_no);
+        $("#customer_addresstwo").text("အိမ်အမှတ်" + delivery.house + "၊" + delivery.road + "လမ်း၊" + delivery.quater + "ရပ်ကွက်၊" + delivery.township + " မြို့နယ်၊" + delivery.division);
+        $("#goods_typetwo").text(delivery.product_name);
+        $("#goods_weighttwo").text(delivery.weight + ' KG');
+        $("#packagetwo").text(delivery.product_name);
+        $("#totaltwo").text(delivery.total_cost + ' ကျပ်');
+        $("#total_feetwo").text(delivery.total_cost + ' ကျပ်');
+        $("#goods_nametwo").text('Packages: ' + delivery.product_name);
+
+
         makeCode('mkonlineshop');
         $("#printbtn").css('display', '');
         let id = $(this).attr('printid');
@@ -365,6 +413,12 @@ $(document).ready(function () {
         let price = ($("#editprice")).val();
         let delivery_fee = ($("#editdelivery_fee")).val();
         let total_cost = ($("#edittotal_cost")).val();
+        let needcash = 2;
+        if (($("#editneedcash"))[0].checked == true) {
+            needcash = 1;
+        } else {
+            needcash = needcash;
+        }
         //let delivery_status = ($("edit#delivery_status")).val();
         let delivery_start_date = ($("#editdelivery_start_date")).val();
         //let delivery_end_date = ($("edit#delivery_end_date")).val();
@@ -384,7 +438,8 @@ $(document).ready(function () {
             "price": price,
             "delivery_fee": delivery_fee,
             "total_cost": total_cost,
-            "delivery_start_date": delivery_start_date
+            "delivery_start_date": delivery_start_date,
+            "needcash": needcash
         };
         //console.log(delivery);
         update(delivery)
@@ -407,7 +462,7 @@ $(document).ready(function () {
         $("#homebtn").css('display', '');
         $("#importdatabtn").css('display', 'none');
         $("#filebox").css('display', 'none');
-      
+
 
     });
 
@@ -420,7 +475,7 @@ $(document).ready(function () {
         $("#vouncherview").css('display', 'none');
         $("#printscreen").css('display', 'none');
         $("#printbtn").css('display', 'none');
-      
+
 
     });
 
@@ -438,11 +493,11 @@ $(document).ready(function () {
         var data = localStorage.getItem('deliveryList');
         //Convert JSON Array to string.
         var json = data;
- 
+
         //Convert JSON string to BLOB.
         json = [json];
         var blob1 = new Blob(json, { type: "text/plain;charset=utf-8" });
- 
+
         //Check the Browser.
         var isIE = false || !!document.documentMode;
         if (isIE) {
@@ -457,17 +512,17 @@ $(document).ready(function () {
             a.click();
             document.body.removeChild(a);
         }
-        
+
 
     });
     $(document).on('click', '#importdatabtn', function (event) {
         event.preventDefault();
         /* Act on the event */
         alert("importdatabtn");
-        let file=document.getElementById('jsonfile');
+        let file = document.getElementById('jsonfile');
         addData(file);
         window.location.reload();
-        
+
     });
     $(document).on('click', '#importbtn', function (event) {
         event.preventDefault();
@@ -483,26 +538,397 @@ $(document).ready(function () {
         $("#homebtn").css('display', '');
         $("#importdatabtn").css('display', '');
         $("#filebox").css('display', '');
-        
-       
-       
 
-    });
-    $(document).on('input', '#price', function() {
-        let total = calculate($('#price').val(), $('#delivery_fee').val());
-        //let result = total.toFixed(2);
-        alert(total);
-        $('#total_cost').val(total);
+
+
 
     });
 
-    $(document).on('input', '#delivery_fee', function() {
+    let n = new Date();
+    let y = n.getFullYear();
+    let m = n.getMonth() + 1;
+    let d = n.getDate();
+    document.getElementById("senddate").innerHTML = d + "/" + m + "/" + y;
+    document.getElementById("senddate2").innerHTML = d + "/" + m + "/" + y;
 
-        let total = calculate($('#price').val(), $('#delivery_fee').val());
-        //let result = total.toFixed(2);
-        alert(total);
-        $('#total_cost').val(total);
 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    let division_data = {
+        မကွေးတိုင်းဒေသကြီး: [
+            "မကွေးမြို့နယ်",
+            "ရေနံချောင်းမြို့နယ်",
+            "ချောက်မြို့နယ်",
+            "တောင်တွင်းကြီးမြို့နယ်",
+            "မြို့သစ်မြို့နယ်",
+            "နတ်မောက်မြို့နယ်",
+            "မင်းဘူးမြို့နယ်",
+            "ပွင့်ဖြူမြို့နယ်",
+            "ငဖဲမြို့နယ်",
+            "စလင်းမြို့နယ်",
+            "စေတုတ္တရာမြို့နယ်",
+            "မြိုင်မြို့နယ်",
+            "ပခုက္ကူမြို့နယ်",
+            "ပေါက်မြို့နယ်",
+            "ဆိပ်ဖြူမြို့နယ်",
+            "ရေစကြိုမြို့နယ်",
+            "သရက်ခရိုင်",
+            "အောင်လံမြို့နယ်",
+            "ကံမမြို့နယ်",
+            "မင်းတုန်းမြို့နယ်",
+            "မင်းလှမြို့နယ်",
+            "ဆင်ပေါင်ဝဲမြို့နယ်",
+            "သရက်မြို့နယ်",
+            "ဂန့်ဂေါခရိုင်",
+            "ဂန့်ဂေါမြို့နယ်",
+            "ထီးလင်းမြို့နယ်",
+            "ဆောမြို့နယ်",
+        ],
+        မန္တလေးတိုင်းဒေသကြီး: [
+            "ကျောက်ဆည်မြို့နယ်",
+            "မြစ်သားမြို့နယ်",
+            "စဉ့်ကိုင်မြို့နယ်",
+            "တံတားဦးမြို့နယ်",
+            "အမရပူရမြို့နယ်",
+            "အောင်မြေသာဇံမြို့နယ်",
+            "ချမ်းအေးသာဇံမြို့နယ်",
+            "ချမ်းမြသာစည်မြို့နယ်",
+            "မဟာအောင်မြေမြို့နယ်",
+            "ပုသိမ်ကြီးမြို့နယ်",
+            "ပြည်ကြီးတံခွန်မြို့နယ်",
+            "မလှိုင်မြို့နယ်",
+            "မိတ္ထီလာမြို့နယ်",
+            "သာစည်မြို့နယ်",
+            "ဝမ်းတွင်းမြို့နယ်",
+            "မြင်းခြံမြို့နယ်",
+            "နွားထိုးကြီးမြို့နယ်",
+            "ငါန်းဇွန်မြို့နယ်",
+            "တောင်သာမြို့နယ်",
+            "ညောင်ဦးမြို့နယ်",
+            "ကျောက်ပန်းတောင်းမြို့နယ်",
+            "မတ္တရာမြို့နယ်",
+            "မိုးကုတ်မြို့နယ်",
+            "ပြင်ဦးလွင်မြို့နယ်",
+            "စဉ့်ကူမြို့နယ်",
+            "သပိတ်ကျင်းမြို့နယ်",
+            "ပျော်ဘွယ်မြို့နယ်",
+            "ရမည်းသင်းမြို့နယ်",
+            "လယ်ဝေးမြို့နယ်",
+            "ပျဉ်းမနားမြို့နယ်",
+            "တပ်ကုန်းမြို့နယ်",
+            "ဥတ္တရသီရိမြို့နယ်",
+            "ဒက္ခိဏသီရိမြို့နယ်",
+            "ပုဗ္ဗသီရိမြို့နယ်",
+            "ဇမ္ဗူသီရိမြို့နယ်",
+            "ဇေယျာသီရိမြို့နယ်",
+        ],
+        ကယားပြည်နယ်: [
+            "လွိုင်ကော်မြို့နယ်",
+            "ဒီမောဆိုးမြို့နယ်",
+            "ဖရူးဆိုးမြို့နယ်",
+            "ရှားတောမြို့နယ်",
+            "ဘော်လခဲမြို့နယ်",
+            "ဖားဆောင်းမြို့နယ်",
+            "မယ်စဲ့မြို့နယ်",
+        ],
+        ရှမ်းပြည်နယ်အရှေ့ပိုင်း: [
+            "ကျိုင်းတုံမြို့နယ်",
+            "မိုင်းခတ်မြို့နယ်",
+            "မိုင်းပြင်းမြို့နယ်",
+            "မိုင်းယန်းမြို့နယ်",
+            "မိုင်းလားမြို့နယ်",
+            "မိုင်းဆတ်မြို့နယ်",
+            "မိုင်းတုံမြို့နယ်",
+            "တာချီလိတ်မြို့နယ်",
+            "မိုင်းဖြတ်မြို့နယ်",
+            "မိုင်းယောင်းမြို့နယ်",
+        ],
+
+        ရှမ်းပြည်နယ်တောင်ပိုင်း: [
+            "လင်းခေးမြို့နယ်",
+            "မိုးနဲမြို့နယ်",
+            "မိုင်းပန်မြို့နယ်",
+            "မောက်မယ်မြို့နယ်",
+            "လွိုင်လင်မြို့နယ်",
+            "လဲချားမြို့နယ်",
+            "နမ့်စန်မြို့နယ်",
+            "ကွန်ဟိန်းမြို့နယ်",
+            "ကျေးသီးမြို့နယ်",
+            "မိုင်းကိုင်မြို့နယ်",
+            "မိုင်းရှူးမြို့နယ်",
+            "တောင်ကြီးမြို့နယ်",
+            "ညောင်ရွှေမြို့နယ်",
+            "ဟိုပုံးမြို့နယ်",
+            "ဆီဆိုင်မြို့နယ်",
+            "ကလောမြို့နယ်",
+            "ပင်းတယမြို့နယ်",
+            "ရွာငံမြို့နယ်",
+            "ရပ်စောက်မြို့နယ်",
+            "ပင်လောင်းမြို့နယ်",
+            "ဖယ်ခုံမြို့နယ်",
+        ],
+        ရှမ်းပြည်နယ်မြောက်ပိုင်း: [
+            "ကျောက်မဲမြို့နယ်",
+            "နောင်ချိုမြို့နယ်",
+            "သီပေါမြို့နယ်",
+            "နမ္မတူမြို့နယ်",
+            "နမ့်ဆန်မြို့နယ်",
+            "မန်တုံမြို့နယ်",
+            "ကွမ်းလုံမြို့နယ်",
+            "လားရှိုးမြို့နယ်",
+            "သိန္နီမြို့နယ်",
+            "မိုင်းရယ်မြို့နယ်",
+            "တန့်ယန်းမြို့နယ်",
+            "ကုန်းကြမ်းမြို့နယ်",
+            "လောက်ကိုင်မြို့နယ်",
+            "ပန်ဝိုင်မြို့နယ်",
+            "မိုင်းမောမြို့နယ်",
+            "ဟိုပန်မြို့နယ်",
+            "မူဆယ်မြို့နယ်",
+            "နမ့်ခမ်းမြို့နယ်",
+            "ကွတ်ခိုင်မြို့နယ်",
+            "မိုးမိတ်မြို့နယ်",
+            "မဘိမ်းမြို့နယ်",
+            "ပန်ဆန်းမြို့နယ်",
+            "မက်မန်းမြို့နယ်",
+            "နားဖန်းမြို့နယ်",
+        ],
+        ပဲခူးတိုင်းဒေသကြီး: [
+            "ပဲခူးမြို့နယ်",
+            "ကဝမြို့နယ်",
+            "သနပ်ပင်မြို့နယ်",
+            "ဝေါမြို့နယ်",
+            "ဒိုက်ဦးမြို့နယ်",
+            "ညောင်လေးပင်မြို့နယ်",
+            "ရွှေကျင်မြို့နယ်",
+            "တောင်ငူမြို့နယ်",
+            "အုတ်တွင်းမြို့နယ်",
+            "ထန်းတပင်မြို့နယ်",
+            "ရေတာရှည်မြို့နယ်",
+            "ဖြူးမြို့နယ်",
+            "ကျောက်တံခါးမြို့နယ်",
+            "ကျောက်ကြီးမြို့နယ်",
+            "ပြည်မြို့နယ်",
+            "ပေါက်ခေါင်းမြို့နယ်",
+            "သဲကုန်းမြို့နယ်",
+            "ရွှေတောင်မြို့နယ်",
+            "ပန်းတောင်းမြို့နယ်",
+            "ပေါင်းတည်မြို့နယ်",
+            "သာယာဝတီမြို့နယ်",
+            "လက်ပံတန်းမြို့နယ်",
+            "မင်းလှမြို့နယ်",
+            "မိုးညိုမြို့နယ်",
+            "အုတ်ဖိုမြို့နယ်",
+            "ကြို့ပင်ကောက်မြို့နယ်",
+            "ဇီးကုန်းမြို့နယ်",
+            "နတ်တလင်းမြို့နယ်",
+        ],
+        ရန်ကုန်တိုင်းဒေသကြီး: [
+            "အလုံမြို့နယ်",
+            "ဗဟန်းမြို့နယ်",
+            "ဒဂုံမြို့နယ်",
+            "ကျောက်တံတားမြို့နယ်",
+            "ကြည့်မြင်တိုင်မြို့နယ်",
+            "လမ်းမတော်မြို့နယ်",
+            "လသာမြို့နယ်",
+            "ပန်းဘဲတန်းမြို့နယ်",
+            "စမ်းချောင်းမြို့နယ်",
+            "လှိုင်မြို့နယ်",
+            "ကမာရွတ်မြို့နယ်",
+            "မရမ်းကုန်းမြို့နယ်",
+            "ဗိုလ်တထောင်မြို့နယ်",
+            "ဒဂုံမြို့သစ်ဆိပ်ကမ်းမြို့နယ်",
+            "ဒဂုံမြို့သစ်အရှေ့ပိုင်းမြို့နယ်",
+            "ဒဂုံမြို့သစ်မြောက်ပိုင်းမြို့နယ်",
+            "မြောက်ဥက္ကလာပမြို့နယ်",
+            "ပုဇွန်တောင်မြို့နယ်",
+            "ဒဂုံမြို့သစ်တောင်ပိုင်းမြို့နယ်",
+            "တောင်ဥက္ကလာပမြို့နယ်",
+            "သင်္ဃန်းကျွန်းမြို့နယ်",
+            "ဒေါပုံမြို့နယ်",
+            "မင်္ဂလာတောင်ညွန့်မြို့နယ်",
+            "တာမွေမြို့နယ်",
+            "သာကေတမြို့နယ်",
+            "ရန်ကင်းမြို့နယ်",
+            "လှိုင်သာယာအရှေ့ပိုင်းမြို့နယ်",
+            "လှိုင်သာယာအနောက်ပိုင်းမြို့နယ်",
+            "အင်းစိန်မြို့နယ်",
+            "မင်္ဂလာဒုံမြို့နယ်",
+            "ရွှေပြည်သာမြို့နယ်",
+            "လှည်းကူးမြို့နယ်",
+            "မှော်ဘီမြို့နယ်",
+            "ထန်းတပင်မြို့နယ်",
+            "တိုက်ကြီးမြို့နယ်",
+            "ဒလမြို့နယ်",
+            "ဆိပ်ကြီးခနောင်တိုမြို့နယ်",
+            "ကိုကိုးကျွန်းမြို့နယ်",
+            "ကော့မှူးမြို့နယ်",
+            "ခရမ်းမြို့နယ်",
+            "ကွမ်းခြံကုန်းမြို့နယ်",
+            "ကျောက်တန်းမြို့နယ်",
+            "သန်လျင်မြို့နယ်",
+            "သုံးခွမြို့နယ်",
+            "တွံတေးမြို့နယ်",
+        ],
+        ကချင်ပြည်နယ်: [
+            "မြစ်ကြီးနားမြို့နယ်",
+            "ဝိုင်းမော်မြို့နယ်",
+            "အင်ဂျန်းယန်မြို့နယ်",
+            "တနိုင်းမြို့နယ်",
+            "ချီဖွေမြို့နယ်",
+            "ဆော့လော်မြို့နယ်",
+            "ဗန်းမော်မြို့နယ်",
+            "ရွှေကူမြို့နယ်",
+            "မိုးမောက်မြို့နယ်",
+            "မံစီမြို့နယ်",
+            "ပူတာအိုမြို့နယ်",
+            "ဆွမ်ပရာဘွမ်မြို့နယ်",
+            "မချမ်းဘောမြို့နယ်",
+            "ခေါင်လန်ဖူးမြို့နယ်",
+            "နောင်မွန်းမြို့နယ်",
+            "မိုးညှင်းမြို့နယ်",
+            "မိုးကောင်းမြို့နယ်",
+            "ဖားကန့်မြို့နယ်",
+        ],
+        စစ်ကိုင်းတိုင်းဒေသကြီး: [
+            "ခန္တီးမြို့နယ်",
+            "ဟုမ္မလင်းမြို့နယ်",
+            "လဟယ်မြို့နယ်",
+            "လေရှီးမြို့နယ်",
+            "နန်းယွန်းမြို့နယ်",
+            "ကလေးမြို့နယ်",
+            "ကလေးဝမြို့နယ်",
+            "မင်းကင်းမြို့နယ်",
+            "ဗန်းမောက်မြို့နယ်",
+            "အင်းတော်မြို့နယ်",
+            "ကသာမြို့နယ်",
+            "ထီးချိုင့်မြို့နယ်",
+            "ကောလင်းမြို့နယ်",
+            "ပင်လယ်ဘူးမြို့နယ်",
+            "ဝန်းသိုမြို့နယ်",
+            "ကန့်ဘလူမြို့နယ်",
+            "ကျွန်းလှမြို့နယ်",
+            "တန့်ဆည်မြို့နယ်",
+            "ရေဦးမြို့နယ်",
+            "မော်လိုက်မြို့နယ်",
+            "ဖောင်းပြင်မြို့နယ်",
+            "အရာတော်မြို့နယ်",
+            "ဘုတလင်မြို့နယ်",
+            "ချောင်းဦးမြို့နယ်",
+            "မုံရွာမြို့နယ်",
+            "မြောင်မြို့နယ်",
+            "မြင်းမူမြို့နယ်",
+            "စစ်ကိုင်းမြို့နယ်",
+            "ခင်ဦးမြို့နယ်",
+            "ရွှေဘိုမြို့နယ်",
+            "ဝက်လက်မြို့နယ်",
+            "ဒီပဲယင်းမြို့နယ်",
+            "တမူးမြို့နယ်",
+            "ယင်းမာပင်မြို့နယ်",
+            "ကနီမြို့နယ်",
+            "ပုလဲမြို့နယ်",
+            "ဆားလင်းကြီးမြို့နယ်",
+        ],
+        တနင်္သာရီတိုင်းဒေသကြီး: [
+            "ထားဝယ်မြို့နယ်",
+            "လောင်းလုံမြို့နယ်",
+            "သရက်ချောင်းမြို့နယ်",
+            "ရေဖြူမြို့နယ်",
+            "ကျွန်းစုမြို့နယ်",
+            "မြိတ်မြို့နယ်",
+            "ပုလောမြို့နယ်",
+            "တနင်္သာရီမြို့နယ်",
+            "ဘုတ်ပြင်းမြို့နယ်",
+            "ကော့သောင်းမြို့နယ်",
+        ],
+        ကရင်ပြည်နယ်: [
+            "ဘားအံမြို့နယ်",
+            "လှိုင်းဘွဲ့မြို့နယ်",
+            "သံတောင်ကြီးမြို့နယ်",
+            "မြဝတီမြို့နယ်",
+            "ကော့ကရိတ်မြို့နယ်",
+            "ကြာအင်းဆိပ်ကြီးမြို့နယ်",
+            "ဖာပွန်မြို့နယ်",
+        ],
+        မွန်ပြည်နယ်: [
+            "မော်လမြိုင်မြို့နယ်",
+            "ကျိုက်မရောမြို့နယ်",
+            "ချောင်းဆုံမြို့နယ်",
+            "သံဖြူဇရပ်မြို့နယ်",
+            "မုဒုံမြို့နယ်",
+            "ရေးမြို့နယ်",
+            "သထုံမြို့နယ်",
+            "ပေါင်မြို့နယ်",
+            "ကျိုက်ထိုမြို့နယ်",
+            "ဘီးလင်းမြို့နယ်",
+        ],
+        ချင်းပြည်နယ်: [
+            "ဟားခါးမြို့နယ်",
+            "ထန်တလန်မြို့နယ်",
+            "ဖလမ်းမြို့နယ်",
+            "တီးတိန်မြို့နယ်",
+            "တွန်းဇံမြို့နယ်",
+            "မတူပီမြို့နယ်",
+            "ပလက်ဝမြို့နယ်",
+            "မင်းတပ်မြို့နယ်",
+            "ကန်ပက်လက်မြို့နယ်",
+        ],
+        ရခိုင်ပြည်နယ်: [
+            "စစ်တွေမြို့နယ်",
+            "ပုဏ္ဏားကျွန်းမြို့နယ်",
+            "ပေါက်တောမြို့နယ်",
+            "ရသေ့တောင်မြို့နယ်",
+            "မောင်တောမြို့နယ်",
+            "ဘူးသီးတောင်မြို့နယ်",
+            "ကျောက်ဖြူမြို့နယ်",
+            "မာန်အောင်မြို့နယ်",
+            "ရမ်းဗြဲမြို့နယ်",
+            "အမ်းမြို့နယ်",
+            "သံတွဲမြို့နယ်",
+            "တောင်ကုတ်မြို့နယ်",
+            "ဂွမြို့နယ်",
+            "မြောက်ဦးမြို့နယ်",
+            "ကျောက်တော်မြို့နယ်",
+            "မင်းပြားမြို့နယ်",
+            "မြေပုံမြို့နယ်",
+        ],
+    };
+    function findbytownship(division, township) {
+        for (var div in division) {
+            let townList = division[div];
+            for (let i = 0; i < townList.length; i++) {
+                if (townList[i] == township) return div;
+            }
+        }
+    }
+    function findbydivision(division, divname) {
+        let div = division[divname];
+        let townList = [];
+        for (let i = 0; i < div.length; i++) {
+            townList.push(div[i]);
+        }
+        return townList;
+    }
+    $(document).on('change', '#division', function () {
+
+        let find_div=this.value ;
+        let town=findbydivision(division_data, find_div);
+        $('#township').empty();
+        town.map(i => {
+            $('#township').append('<option value="' + i+ '"">' + i + '</option>');
+
+        })
     });
+
+    $(document).on('change', '#editdivision', function () {
+
+        let find_div=this.value ;
+        let town=findbydivision(division_data, find_div);
+        $('#edittownship').empty();
+        town.map(i => {
+            $('#edittownship').append('<option value="' + i+ '"">' + i + '</option>');
+
+        })
+    });
+
 
 });
